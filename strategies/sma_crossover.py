@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pandas as pd
 from ta.momentum import RSIIndicator
 from data.MyFile import fetch_and_clean_ticker_data
@@ -32,18 +36,19 @@ def sma_rsi_crossover(data, short_window=20, long_window=50, rsi_window=14):
     
     return data
 
-tickers = ["AAPL", "GOOG", "TSLA", "AMZN", "META"]
+if __name__ == "__main__":
+    tickers = ["AAPL", "GOOG", "TSLA", "AMZN", "META"]
 
-# Fetch cleaned data
-cleaned_data = fetch_and_clean_ticker_data(tickers)
+    # Fetch cleaned data
+    cleaned_data = fetch_and_clean_ticker_data(tickers)
 
-# Apply strategy to each
-for ticker in tickers:
-    if ticker in cleaned_data:
-        df = cleaned_data[ticker]
-        result = sma_rsi_crossover(df)
-        print(f"\n{ticker} Signals:")
-        print(result[['Date', 'Close', 'SMA_Short', 'SMA_Long', 'RSI', 'Signal']].tail())
+    # Apply strategy to each
+    for ticker in tickers:
+        if ticker in cleaned_data:
+            df = cleaned_data[ticker]
+            result = sma_rsi_crossover(df)
+            print(f"\n{ticker} Signals:")
+            print(result[['Date', 'Close', 'SMA_Short', 'SMA_Long', 'RSI', 'Signal']].tail())
 
 
 
